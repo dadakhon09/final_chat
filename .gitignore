@@ -1,0 +1,11 @@
+venv
+migrations/
+media/
+db.sqlite3
+landing.iml
+__pycache__/
+.idea/
+*.log
+*.pot
+*.pyc
+local_settings.py
