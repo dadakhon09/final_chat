@@ -11,15 +11,18 @@
 </body>
 <script>
     let roomName = {{ room_name_json }};
+    let sender = {{ sender }};
 
     let chatSocket = new WebSocket(
         'ws://' + window.location.host +
         '/ws/chat/' + roomName + '/');
 
     chatSocket.onmessage = function(e) {
+        // console.log(e.data)
         let data = JSON.parse(e.data);
         let message = data['message'];
-        document.querySelector('#chat-log').value += (message + '\n');
+        let sender = data['sender'];
+        document.querySelector('#chat-log').value += (message + ' from ' + sender + '\n');
     };
 
     chatSocket.onclose = function(e) {
@@ -38,7 +41,8 @@
         let message = messageInputDom.value;
 
         chatSocket.send(JSON.stringify({
-            'message': message
+            'message': message,
+            'sender': sender
         }));
 
         messageInputDom.value = '';

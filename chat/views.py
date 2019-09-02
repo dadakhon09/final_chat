@@ -14,7 +14,7 @@ class Index(View):
 
 class Room(View):
     def get(self, request, room_name):
-        return render(request, 'room.html', {
-            'sender': request.user,
+    	return render(request, 'room.html', {
+            'sender': mark_safe(json.dumps(self.request.user.username)),
             'room_name_json': mark_safe(json.dumps(room_name))
         })
