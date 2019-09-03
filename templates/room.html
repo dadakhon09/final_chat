@@ -1,28 +1,142 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Chat Room</title>
+    <title>Chat Rooms</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.8/css/mdb.min.css" rel="stylesheet">
 </head>
 <body>
-    <textarea id="chat-log" cols="100" rows="20" readonly></textarea><br/>
-    <input id="chat-message-input" type="text" size="100"/><br/>
-    <input id="chat-message-submit" type="button" value="Send"/>
+{#    <textarea id="chat-log" cols="100" rows="20" readonly></textarea><br/>#}
+{#    <input id="chat-message-input" type="text" size="100"/><br/>#}
+{#    <input id="chat-message-submit" type="button" value="Send"/>#}
+<div class='container'>
+    <div class='row border-bottom my-3 py-3'>
+        <div class='col'>
+            <h1 class='p-0 m-0'>Chat App</h1>
+        </div>
+    </div>
+</div>
+<div style="width: 1500px; margin:auto" class="card grey lighten-3 ">
+    <div class="card-body">
+        <div class="row px-lg-2 px-2">
+            <div class="col-md-6 col-xl-4 px-0">
+                <h6 class="font-weight-bold mb-3 text-center text-lg-left">Chalagram</h6>
+                <div class="white z-depth-1 px-3 pt-3 pb-0">
+                    {% for user in users %}
+                        <ul class="list-unstyled friend-list">
+                            <li class="active grey lighten-3 p-2">
+                                <a href="#" class="d-flex justify-content-between">
+                                    <img width="60px" height="60px"
+                                         src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" alt="avatar"
+                                         class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
+                                    <div class="text-small">
+                                        <strong>{{ user.username }}</strong>
+                                        <p class="last-message text-muted">Hello, Are you there?</p>
+                                    </div>
+                                    <div class="chat-footer">
+                                        <p class="text-smaller text-muted mb-0">Just now</p>
+                                        <span class="badge badge-danger float-right">1</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-8 pl-md-3 px-lg-auto px-0">
+                <div class="chat-message">
+                    <ul class="list-unstyled chat chat-inner">
+                        <li class="d-flex justify-content-between mb-4">
+                            <div class="chat-body white p-3 z-depth-1">
+                                <div class="header">
+                                    <strong class="primary-font">{{ receiver.username }}</strong>
+                                    <small class="pull-right text-muted"><i class="far fa-clock"></i> 13 mins
+                                        ago</small>
+                                </div>
+                                <hr class="w-100">
+                                <p class="mb-0">
+                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+                                    doloremque
+                                    laudantium.
+                                </p>
+                            </div>
+                            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg" alt="avatar"
+                                 class="avatar rounded-circle mr-0 ml-3 z-depth-1">
+                        </li>
+                        <li class="d-flex justify-content-between mb-4 pb-3">
+                            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg" alt="avatar"
+                                 class="avatar rounded-circle mr-2 ml-lg-3 ml-0 z-depth-1">
+                            <div class="chat-body white p-3 ml-2 z-depth-1">
+                                <div class="header">
+                                    <strong class="primary-font">{{ user.username }}</strong>
+                                    <small class="pull-right text-muted"><i class="far fa-clock"></i> 12 mins
+                                        ago</small>
+                                </div>
+                                <hr class="w-100">
+                                <p class="mb-0" id="chat-log">
+
+                                </p>
+                            </div>
+                        </li>
+                        <li class="white">
+                            <div class="form-group basic-textarea">
+                                <textarea class="form-control pl-2 my-0" id="chat-message-input" rows="3"
+                                          placeholder="Type your message here..."></textarea>
+                            </div>
+                        </li>
+                        <button type="button" id="chat-message-submit"
+                                class="btn btn-info btn-rounded btn-sm waves-effect waves-light float-right">Send
+                        </button>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<style>
+    .chat-inner{
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+    #chat-message-submit{
+        display: block;
+        width: 200px;
+        float: right;
+        align-self: flex-end;
+    }
+    .basic-textarea{
+        margin:0;
+    }
+
+</style>
 <script>
     let roomName = {{ room_name_json }};
     let sender = {{ sender }};
+    let receiver = "{{ receiver.username }}";
 
     let chatSocket = new WebSocket(
         'ws://' + window.location.host +
         '/ws/chat/' + roomName + '/');
 
     chatSocket.onmessage = function(e) {
-        // console.log(e.data)
+        console.log(e.data);
         let data = JSON.parse(e.data);
         let message = data['message'];
-        let sender = data['sender'];
-        document.querySelector('#chat-log').value += (message + ' from ' + sender + '\n');
+        document.querySelector('#chat-log').prepend(message)
+    };
+
+    chatSocket.onopen =function(e){
+        console.log('onopen');
     };
 
     chatSocket.onclose = function(e) {
@@ -42,7 +156,8 @@
 
         chatSocket.send(JSON.stringify({
             'message': message,
-            'sender': sender
+            'sender': sender,
+            'receiver': receiver,
         }));
 
         messageInputDom.value = '';
