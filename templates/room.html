@@ -16,7 +16,7 @@
 {#    <textarea id="chat-log" cols="100" rows="20" readonly></textarea><br/>#}
 {#    <input id="chat-message-input" type="text" size="100"/><br/>#}
 {#    <input id="chat-message-submit" type="button" value="Send"/>#}
-<div></div>
+
 <div class='container'>
     <div class='row border-bottom my-3 py-3'>
         <div class='col'>
@@ -127,7 +127,7 @@
 
     let chatSocket = new WebSocket(
         'ws://' + window.location.host +
-        '/ws/chat/' + roomName + '/');
+        '/ws/chat/');
 
     chatSocket.onmessage = function(e) {
         console.log(e.data);
@@ -159,6 +159,7 @@
             'message': message,
             'sender': sender,
             'receiver': receiver,
+            'room_name': roomName,
         }));
 
         messageInputDom.value = '';

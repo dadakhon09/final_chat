@@ -7,34 +7,37 @@ from chat.models import Room, Message
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
-    # @database_sync_to_async
     async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        # self.room_name = self.scope['url_route']['kwargs']['room_name']
 
-        await self.channel_layer.group_add(
-            self.room_name,
-            self.channel_name
-        )
+        # await self.channel_layer.group_add(
+        #     self.room_name,
+        #     self.channel_name
+        # )
 
         await self.accept()
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
-            self.room_name,
+            # self.room_name,
             self.channel_name
         )
 
+    
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
+        print(text_data_json)
         message = text_data_json['message']
         sender = User.objects.get(username=text_data_json['sender'])
+        receiver = User.objects.get(username=text_data_json['receiver'])
+        room_name = text_data_json['room_name']
 
-        room = Room.objects.get(room_name=self.room_name)
+        room = Room.objects.get(sender=sender, receiver=receiver, room_name=room_name)
 
         Message.objects.create(text=message, room=room)
 
         await self.channel_layer.group_send(
-            self.room_name,
+            room_name,
             {
                 'type': 'chat_message',
                 'message': message,

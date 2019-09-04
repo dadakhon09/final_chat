@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <title>Chat Rooms</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.8/css/mdb.min.css" rel="stylesheet">
 </head>
+
 <body>
-{#Select user and room<br/>#}
-{#<input id="room-name-input" type="text" size="100"/><br/>#}
-{#<input id="room-name-submit" type="button" value="Enter"/>#}
-<div class='container'>
-    <div class='row border-bottom my-3 py-3'>
-        <div class='col'>
-            <h1 class='p-0 m-0'>Chat App</h1>
+    {#Select user and room<br />#}
+    {#<input id="room-name-input" type="text" size="100" /><br />#}
+    {#<input id="room-name-submit" type="button" value="Enter" />#}
+    <div class='container'>
+        <div class='row border-bottom my-3 py-3'>
+            <div class='col'>
+                <h1 class='p-0 m-0'>Chat App</h1>
+            </div>
         </div>
     </div>
-</div>
-<div style="width: 1500px; margin:auto" class="card grey lighten-3 chat-room">
-    <div class="card-body">
-        <div class="row px-lg-2 px-2">
-            <div class="col-md-6 col-xl-4 px-0">
-                <h6 class="font-weight-bold mb-3 text-center text-lg-left">Chalagram</h6>
-                <div class="white z-depth-1 px-3 pt-3 pb-0">
-                    {% for user in users %}
+    <div style="width: 1500px; margin:auto" class="card grey lighten-3 chat-room">
+        <div class="card-body">
+            <div class="row px-lg-2 px-2">
+                <div class="col-md-6 col-xl-4 px-0">
+                    <h6 class="font-weight-bold mb-3 text-center text-lg-left">Chalagram</h6>
+                    <div class="white z-depth-1 px-3 pt-3 pb-0">
+                        {% for user in users %}
                         <ul class="list-unstyled friend-list">
                             <li class="active grey lighten-3 p-2">
                                 <a href="#" class="d-flex justify-content-between">
-                                    <img width="60px" height="60px"
-                                         src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" alt="avatar"
-                                         class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
+                                    <img width="60px" height="60px" src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" alt="avatar" class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
                                     <div class="text-small">
                                         <strong>{{ user.username }}</strong>
                                         <p class="last-message text-muted">Hello, Are you there?</p>
@@ -43,73 +43,26 @@
                                 </a>
                             </li>
                         </ul>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6 col-xl-8 pl-md-3 px-lg-auto px-0">
-                <div class="chat-message">
-                    <ul class="list-unstyled chat">
-                        <li class="d-flex justify-content-between mb-4">
-                            <div class="chat-body white p-3 z-depth-1">
-                                <div class="header">
-                                    <strong class="primary-font">Lara Croft</strong>
-                                    <small class="pull-right text-muted"><i class="far fa-clock"></i> 13 mins
-                                        ago</small>
-                                </div>
-                                <hr class="w-100">
-                                <p class="mb-0">
-                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
-                                    doloremque
-                                    laudantium.
-                                </p>
-                            </div>
-                            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg" alt="avatar"
-                                 class="avatar rounded-circle mr-0 ml-3 z-depth-1">
-                        </li>
-                        <li class="d-flex justify-content-between mb-4 pb-3">
-                            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg" alt="avatar"
-                                 class="avatar rounded-circle mr-2 ml-lg-3 ml-0 z-depth-1">
-                            <div class="chat-body white p-3 ml-2 z-depth-1">
-                                <div class="header">
-                                    <strong class="primary-font">Brad Pitt</strong>
-                                    <small class="pull-right text-muted"><i class="far fa-clock"></i> 12 mins
-                                        ago</small>
-                                </div>
-                                <hr class="w-100">
-                                <p class="mb-0">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut
-                                    labore et dolore magna aliqua.
-                                </p>
-                            </div>
-                        </li>
-                        <li class="white">
-                            <div class="form-group basic-textarea">
-                                <textarea class="form-control pl-2 my-0" id="room-name-input" rows="3"
-                                          placeholder="Type your message here..."></textarea>
-                            </div>
-                        </li>
-                        <button type="button" id="room-name-submit"
-                                class="btn btn-info btn-rounded btn-sm waves-effect waves-light float-right">Send
-                        </button>
-                    </ul>
-                </div>
+                <div>Select user to chat with... </div>
             </div>
         </div>
     </div>
-</div>
-<script>
+    <script>
     document.querySelector('#room-name-input').focus();
-    document.querySelector('#room-name-input').onkeyup = function (e) {
+    document.querySelector('#room-name-input').onkeyup = function(e) {
         if (e.keyCode === 13) {
             document.querySelector('#room-name-submit').click();
         }
     };
 
-    document.querySelector('#room-name-submit').onclick = function (e) {
+    document.querySelector('#room-name-submit').onclick = function(e) {
         var roomName = document.querySelector('#room-name-input').value;
-        window.location.pathname = '/chat/' + roomName + '/';
+        window.location.pathname = '/chat/';
     };
-</script>
+    </script>
 </body>
+
 </html>
