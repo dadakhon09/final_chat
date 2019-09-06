@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <title>Chat Rooms</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <!-- Font Awesome -->
@@ -11,31 +12,26 @@
     <!-- Material Design Bootstrap -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.8/css/mdb.min.css" rel="stylesheet">
 </head>
-<body>
-{#    <textarea id="chat-log" cols="100" rows="20" readonly></textarea><br/>#}
-{#    <input id="chat-message-input" type="text" size="100"/><br/>#}
-{#    <input id="chat-message-submit" type="button" value="Send"/>#}
 
-<div class='container'>
-    <div class='row border-bottom my-3 py-3'>
-        <div class='col'>
-            <h1 class='p-0 m-0'>Chat App</h1>
+<body>
+    <div class='container'>
+        <div class='row border-bottom my-3 py-3'>
+            <div class='col'>
+                <h1 class='p-0 m-0'>Chat App</h1>
+            </div>
         </div>
     </div>
-</div>
-<div style="width: 1500px; margin:auto" class="card grey lighten-3 ">
-    <div class="card-body">
-        <div class="row px-lg-2 px-2">
-            <div class="col-md-6 col-xl-4 px-0" style="background: #fff; padding: 15px;">
-                <h6 class="font-weight-bold mb-3 text-center text-lg-left" style="padding: 0 15px">Chalagram</h6>
-                <div class="white">
-                    <ul class="list-unstyled friend-list">
-                        {% for user in users %}
+    <div style="width: 1500px; margin:auto" class="card grey lighten-3 ">
+        <div class="card-body">
+            <div class="row px-lg-2 px-2">
+                <div class="col-md-6 col-xl-4 px-0" style="background: #fff; padding: 15px;">
+                    <h6 class="font-weight-bold mb-3 text-center text-lg-left" style="padding: 0 15px">Chalagram</h6>
+                    <div class="white">
+                        <ul class="list-unstyled friend-list">
+                            {% for user in users %}
                             <li class="active grey lighten-5 p-2" style="border-bottom: 1px solid #dadada">
                                 <a href="{% url 'room' user.id %}" class="d-flex justify-content-between">
-                                    <img width="60px" height="60px"
-                                         src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" alt="avatar"
-                                         class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
+                                    <img width="60px" height="60px" src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" alt="avatar" class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
                                     <div class="text-small">
                                         <strong>{{ user.username }}</strong>
                                         <p class="last-message text-muted">Hello, Are you there?</p>
@@ -46,33 +42,29 @@
                                     </div>
                                 </a>
                             </li>
-                        {% endfor %}
-                    </ul>
-
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6 col-xl-8 pl-md-3 px-lg-auto px-0">
-                <div class="chat-message">
-                    <div class="top chat-body-container">
-                        <ul class="list-unstyled chat chat-inner">
-                            <li class="d-flex justify-content-start mb-4">
-                                <div class="chat-body white p-3 z-depth-1">
-                                    <div class="header">
-                                        <strong class="primary-font">{{ receiver.username }}</strong>
-                                        <small class="pull-right text-muted"><i class="far fa-clock"></i> 13 mins
-                                            ago</small>
+                <div class="col-md-6 col-xl-8 pl-md-3 px-lg-auto px-0">
+                    <div class="chat-message">
+                        <div class="top chat-body-container">
+                            <ul class="list-unstyled chat chat-inner">
+                                <li class="d-flex justify-content-start mb-4">
+                                    <div class="chat-body white p-3 z-depth-1">
+                                        <div class="header">
+                                            <strong class="primary-font">{{ receiver.username }}</strong>
+                                            <small class="pull-right text-muted"><i class="far fa-clock"></i> 13 mins
+                                                ago</small>
+                                        </div>
+                                        <hr class="w-100">
+                                        <p class="mb-0">
+                                            ffffffffffffff
+                                        </p>
                                     </div>
-                                    <hr class="w-100">
-                                    <p class="mb-0">
-                                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
-                                        doloremque
-                                        laudantium.
-                                    </p>
-                                </div>
-                            </li>
-                            {% for msg in messages %}
+                                </li>
+                                {% for msg in messages %}
                                 <li class="d-flex justify-content-end mb-4 pb-3" id="chat-log">
-
                                     <div class="chat-body white p-3 ml-2 z-depth-1 mr-30">
                                         <div class="header">
                                             <strong class="primary-font">{{ user.username }}</strong>
@@ -80,94 +72,90 @@
                                                 ago</small>
                                         </div>
                                         <hr class="w-100">
-
                                         <p class="mb-0" id="">
                                             {{ msg.text }}
                                         </p>
                                     </div>
                                 </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <div class="bottom">
-                        <div class="white">
-                            <div class="form-group basic-textarea">
-                                <textarea class="form-control mr-30" id="chat-message-input" rows="3"
-                                          cols="12" placeholder="Type your message here..."></textarea>
-                            </div>
+                                {% endfor %}
+                            </ul>
                         </div>
-                        <button type="button" id="chat-message-submit"
-                                class="btn btn-info btn-rounded btn-sm waves-effect waves-light float-right">Send
-                        </button>
+                        <div class="bottom">
+                            <div class="white">
+                                <div class="form-group basic-textarea">
+                                    <textarea class="form-control mr-30" id="chat-message-input" rows="3" cols="12" placeholder="Type your message here..."></textarea>
+                                </div>
+                            </div>
+                            <button type="button" id="chat-message-submit" class="btn btn-info btn-rounded btn-sm waves-effect waves-light float-right">Send
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-</div>
 </body>
 <style>
-    .chat-inner {
-        min-height: 70vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-    }
+.chat-inner {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
 
-    #chat-message-submit {
-        display: block;
-        width: 200px;
-        float: right;
-        align-self: flex-end;
-    }
+#chat-message-submit {
+    display: block;
+    width: 200px;
+    float: right;
+    align-self: flex-end;
+}
 
-    .basic-textarea {
-        margin: 0;
-    }
+.basic-textarea {
+    margin: 0;
+}
 
-    .top {
-        height: 68vh;
-        overflow: auto;
-    }
+.top {
+    height: 68vh;
+    overflow: auto;
+}
 
-    .mr-30 {
-        margin-right: 30px;
-    }
+.mr-30 {
+    margin-right: 30px;
+}
 
-    .chat-body-container {
-        scroll-behavior: auto;
-    }
+.chat-body-container {
+    scroll-behavior: auto;
+}
 
-    .chat-smooth {
-        scroll-behavior: smooth;
-    }
+.chat-smooth {
+    scroll-behavior: smooth;
+}
 </style>
 <script>
-    let roomName = {{ room_name_json }};
-    let sender = {{ sender }};
-    let receiver = "{{ receiver.username }}";
-    let receiver_id = {{ receiver.id }};
+let roomName = {{ room_name_json }};
+let sender = {{ sender }};
+let receiver = "{{ receiver.username }}";
+let receiver_id = {{ receiver.id }};
 
-    const chat = document.querySelector(".chat"),
-        chatBodyContainer = document.querySelector('.chat-body-container');
-    chatBodyContainer.scrollTop = chat.scrollHeight;
+const chat = document.querySelector(".chat"),
+    chatBodyContainer = document.querySelector('.chat-body-container');
+chatBodyContainer.scrollTop = chat.scrollHeight;
 
 
-    let chatSocket = new WebSocket(
-        'ws://' + window.location.host +
-        '/ws/chat/' + receiver_id + '/');
+let chatSocket = new WebSocket(
+    'ws://' + window.location.host +
+    '/ws/chat/' + receiver_id + '/');
 
-    chatSocket.onmessage = function (e) {
-        console.log(e.data);
-        let data = JSON.parse(e.data);
-        let message = data['message'];
-        {#document.querySelector('#chat-log').append(message);#}
-        var element = `<li class="d-flex justify-content-end mb-4 pb-3" id="chat-log">
+chatSocket.onmessage = function(e) {
+    console.log(e.data);
+    let data = JSON.parse(e.data);
+    let message = data['message'];
+    let sender = data['sender'];
+    var element = `<li class="d-flex justify-content-end mb-4 pb-3" id="chat-log">
 
                                 <div class="chat-body white p-3 ml-2 z-depth-1 mr-30">
                                     <div class="header">
-                                        <strong class="primary-font">dadakhon</strong>
+                                        <strong class="primary-font">`+ sender +`</strong>
                                         <small class="pull-right text-muted"><i class="far fa-clock"></i> 12 mins
                                             ago</small>
                                     </div>
@@ -180,39 +168,40 @@
                                 </div>
                             </li>`
 
-        chat.innerHTML += (element);
-        chatBodyContainer.classList.add('chat-smooth');
-        chatBodyContainer.scrollTop = chat.scrollHeight;
+    chat.innerHTML += (element);
+    chatBodyContainer.classList.add('chat-smooth');
+    chatBodyContainer.scrollTop = chat.scrollHeight;
 
-    };
+};
 
-    chatSocket.onopen = function (e) {
-        console.log('onopen');
-    };
+chatSocket.onopen = function(e) {
+    console.log('onopen');
+};
 
-    chatSocket.onclose = function (e) {
-        console.error('Chat socket closed unexpectedly');
-    };
+chatSocket.onclose = function(e) {
+    console.error('Chat socket closed unexpectedly');
+};
 
-    document.querySelector('#chat-message-input').focus();
-    document.querySelector('#chat-message-input').onkeyup = function (e) {
-        if (e.keyCode === 13) {
-            document.querySelector('#chat-message-submit').click();
-        }
-    };
+document.querySelector('#chat-message-input').focus();
+document.querySelector('#chat-message-input').onkeyup = function(e) {
+    if (e.keyCode === 13) {
+        document.querySelector('#chat-message-submit').click();
+    }
+};
 
-    document.querySelector('#chat-message-submit').onclick = function (e) {
-        let messageInputDom = document.querySelector('#chat-message-input');
-        let message = messageInputDom.value;
+document.querySelector('#chat-message-submit').onclick = function(e) {
+    let messageInputDom = document.querySelector('#chat-message-input');
+    let message = messageInputDom.value;
 
-        chatSocket.send(JSON.stringify({
-            'message': message,
-            'sender': sender,
-            'receiver': receiver,
-            'room_name': roomName,
-        }));
+    chatSocket.send(JSON.stringify({
+        'message': message,
+        'sender': sender,
+        'receiver': receiver,
+        'room_name': roomName,
+    }));
 
-        messageInputDom.value = '';
-    };
+    messageInputDom.value = '';
+};
 </script>
+
 </html>

@@ -39,3 +39,4 @@ class RoomView(View):
             'receiver': receiver,
             'room_name_json': mark_safe(json.dumps(room.room_name))
         })
+        
