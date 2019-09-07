@@ -1,6 +1,9 @@
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.safestring import mark_safe
 import json
 
@@ -9,7 +12,7 @@ from django.views import View
 from chat.models import Room, Message
 
 
-class Index(View):
+class Index(LoginRequiredMixin, View):
     def get(self, request):
         users = User.objects.exclude(username=request.user.username)
 
@@ -18,7 +21,7 @@ class Index(View):
         })
 
 
-class RoomView(View):
+class RoomView(LoginRequiredMixin, View):
     def get(self, request, receiver_id):
         users = User.objects.exclude(username=request.user.username)
 
@@ -39,4 +42,29 @@ class RoomView(View):
             'receiver': receiver,
             'room_name_json': mark_safe(json.dumps(room.room_name))
         })
-        
+
+
+class UserRegister(View):
+    def post(self, request):
+        username = self.request.POST.get('username')
+        password = self.request.POST.get('password')
+        User.objects.create_user(username=username, password=password)
+        return redirect('index')
+
+    def get(self, request):
+        return render(request, 'register.html', {})
+
+
+class UserLogin(View):
+    def post(self, request):
+        username = self.request.POST.get('username')
+        password = self.request.POST.get('password')
+        u = authenticate(username=username, password=password)
+        if u:
+            login(request, u)
+        else:
+            return render(request, 'login.html', {})
+        return redirect('index')
+
+    def get(self, request):
+        return render(request, 'login.html', {})
