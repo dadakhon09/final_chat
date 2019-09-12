@@ -6,7 +6,7 @@ from django.dispatch import receiver
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    photo = models.ImageField()
+    photo = models.ImageField(upload_to='media', null=True, blank=True)
 
     def __str__(self):
         return self.user.username
@@ -21,8 +21,8 @@ def wtf(sender, instance, created, **kwargs):
 
 class Room(models.Model):
     room_name = models.CharField(max_length=255, unique=True, null=True, blank=True)
-    sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)
-    receiver = models.ForeignKey(User, related_name='receiver', on_delete=models.CASCADE)
+    # sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)
+    # receiver = models.ForeignKey(User, related_name='receiver', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -36,6 +36,10 @@ class Room(models.Model):
 class Message(models.Model):
     text = models.TextField()
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True, blank=True)
+    sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(User, related_name='receiver', on_delete=models.CASCADE)
+    
+
     read = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
