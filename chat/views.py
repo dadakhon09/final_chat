@@ -23,14 +23,17 @@ class Index(LoginRequiredMixin, View):
 
 class RoomView(LoginRequiredMixin, View):
     def get(self, request, receiver_id):
-        users = User.objects.exclude(username=request.user.username)
-
+        users = User.objects.exclude(username=request.user.username) 
         receiver = get_object_or_404(User, id=receiver_id)
-
+        
         if receiver != request.user:
-            room, _ = Room.objects.get_or_create(sender=request.user, receiver=receiver,
-                                                 room_name=f'{request.user}-and-{receiver}')
-        else:
+            if Room.objects.filter(room_name=f'to_{self.request.user.id}').exists() and receiver != request.user:
+                room = Room.objects.get(room_name=f'to_{self.request.user.id}')
+
+            else:        
+                room, _ = Room.objects.get_or_create(room_name=f'to_{receiver_id}')
+
+        elif receiver == request.user:
             return HttpResponse("You can't chat to yourself")
 
         messages = Message.objects.filter(room=room)  # .order_by('-created')[:5][::-1]
