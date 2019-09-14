@@ -33,8 +33,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         if room_name == f'to_{receiver.id}':
             room = Room.objects.get(room_name=room_name)
-        elif room_name ==f'to_{sender.id}':
+        elif room_name == f'to_{sender.id}':
             room = Room.objects.get(room_name=f'to_{sender.id}')
+        else:
+            room = ''
 
         Message.objects.create(sender=sender, receiver=receiver, text=message, room=room)
 
@@ -55,7 +57,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def chat_message(self, event):
         message = event['message']
         sender_username = event['sender']
-    
+
         await self.send(text_data=json.dumps({
             'message': message,
             'sender': sender_username,

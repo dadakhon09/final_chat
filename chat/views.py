@@ -36,6 +36,9 @@ class RoomView(LoginRequiredMixin, View):
         elif receiver == request.user:
             return HttpResponse("You can't chat to yourself")
 
+        else:
+            return HttpResponse('wtf')
+
         messages = Message.objects.filter(room=room)  # .order_by('-created')[:5][::-1]
 
         return render(request, 'room.html', {
@@ -52,9 +55,15 @@ class UserRegister(View):
         username = self.request.POST.get('username')
         password = self.request.POST.get('password')
         User.objects.create_user(username=username, password=password)
+        u = authenticate(username=username, password=password)
+        if u:
+            login(request, u)
+        else:
+            return render(request, 'login.html', {})
         return redirect('index')
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         return render(request, 'register.html', {})
 
 
@@ -69,5 +78,6 @@ class UserLogin(View):
             return render(request, 'login.html', {})
         return redirect('index')
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         return render(request, 'login.html', {})
