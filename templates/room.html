@@ -172,13 +172,14 @@ chatSocket.onmessage = function(e) {
 
                                     </p>
                                 </div>
-                            </li>`
+                            </li>`;
 
     chat.innerHTML += (element);
     chatBodyContainer.classList.add('chat-smooth');
     chatBodyContainer.scrollTop = chat.scrollHeight;
 
 };
+
 
 chatSocket.onopen = function(e) {
     console.log('onopen');
