@@ -51,6 +51,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     async def chat_message(self, event):
+        print(event)
         message = event['message']
         sender_username = event['sender']
         created_minute = event['created_minute']

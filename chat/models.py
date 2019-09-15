@@ -1,3 +1,5 @@
+import asyncio
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
@@ -52,10 +54,11 @@ class Message(models.Model):
 @receiver(post_save, sender=Message)
 def send_fuck(instance, **kwargs):
     from channels.layers import get_channel_layer
-    from asgiref.sync import async_to_sync
+    loop = asyncio.get_event_loop()
     layer = get_channel_layer()
-    print(dir(layer))
-    async_to_sync(layer.send)(str(instance.receiver.id), {
+    loop.create_task(layer.group_send(str(instance.sender.id), {
         'type': 'chat_message',
-        'message': 'asd'
-    })
+        'message': 'message',
+        'sender': instance.sender.username,
+        'created_minute': '12321321321'
+    }))
