@@ -47,3 +47,15 @@ class Message(models.Model):
 
     def __str__(self):
         return self.text
+
+
+@receiver(post_save, sender=Message)
+def send_fuck(instance, **kwargs):
+    from channels.layers import get_channel_layer
+    from asgiref.sync import async_to_sync
+    layer = get_channel_layer()
+    print(dir(layer))
+    async_to_sync(layer.send)(str(instance.receiver.id), {
+        'type': 'chat_message',
+        'message': 'asd'
+    })
