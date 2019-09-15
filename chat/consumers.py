@@ -9,7 +9,6 @@ from chat.models import Room, Message
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
 
-        # self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.receiver_id = self.scope['url_route']['kwargs']['receiver_id']
 
         await self.channel_layer.group_add(
@@ -39,27 +38,28 @@ class ChatConsumer(AsyncWebsocketConsumer):
         else:
             room = ''
 
-        Message.objects.create(sender=sender, receiver=receiver, text=message, room=room)
+        m = Message.objects.create(sender=sender, receiver=receiver, text=message, room=room)
 
         await self.channel_layer.group_send(
             str(receiver.id),
             {
                 'type': 'chat_message',
                 'message': message,
-                'sender': sender.username
+                'sender': sender.username,
+                'created_minute': int(m.created.minute)
             }
         )
-        #
-        # await self.send(text_data=json.dumps({
-        #     'message': message,
-        #     'sender': sender.username,
-        # }))
 
     async def chat_message(self, event):
         message = event['message']
         sender_username = event['sender']
-
+        created_minute = event['created_minute']
+        print(event)
         await self.send(text_data=json.dumps({
             'message': message,
             'sender': sender_username,
+            'created_minute': created_minute
         }))
+
+
+
