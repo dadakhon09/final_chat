@@ -40,9 +40,11 @@ class RoomView(LoginRequiredMixin, View):
             return HttpResponse('wtf')
 
         messages = Message.objects.filter(room=room)  # .order_by('-created')[:5][::-1]
+        my_message =messages.first()
 
         return render(request, 'room.html', {
             'users': users,
+            'my_message':my_message.text,
             'messages': messages,
             'sender': mark_safe(json.dumps(self.request.user.username)),
             'receiver': receiver,

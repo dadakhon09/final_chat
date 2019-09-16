@@ -52,6 +52,10 @@
                 </div>
             </div>
             <div class="col-md-6 col-xl-8 pl-md-3 px-lg-auto px-0">
+                
+                <p id="receiver" class="text-center">
+                    
+                </p>
                 <div class="chat-message">
                     <div class="top chat-body-container">
                         <ul class="list-unstyled chat chat-inner">
@@ -86,7 +90,7 @@
                                             </p>
                                         </div>
                                     </li>
-                                {% else %}sadasdsa
+                                {% else %}
                                 {% endif %}
 
                             {% endfor %}
@@ -95,7 +99,7 @@
                     <div class="bottom">
                         <div class="white">
                             <div class="form-group basic-textarea">
-                                <textarea class="form-control mr-30" id="chat-message-input" rows="3" cols="12"
+                                <textarea class="form-control mr-30 textarea" id="chat-message-input" rows="3" cols="12"
                                           placeholder="Type your message here..."></textarea>
                             </div>
                         </div>
@@ -153,7 +157,6 @@
         for (let i = 0; i < places.length; i++) {
             places[i].innerHTML = today.getMinutes() - places[i].innerHTML;
         }
-
     }
 
     setDates();
@@ -162,6 +165,21 @@
     let sender = {{ sender }};
     let receiver = "{{ receiver.username }}";
     let receiver_id = {{ receiver.id }};
+
+
+
+    let my_message = "{{ my_message.text }}";
+    
+
+
+
+
+
+    // let current_text = document.getElementsByClassName('text-form');
+
+    // console.log(current_text)
+    
+    document.getElementById('receiver').innerHTML = receiver;
 
 
     const chat = document.querySelector(".chat"),
@@ -176,12 +194,13 @@
         console.log(e.data);
         let today = new Date();
         let data = JSON.parse(e.data);
+
         let message = data['message'];
         let sender = data['sender'];
 
         console.log(message);
         let time = today.getMinutes() - data['created_minute'];
-        let element = `<li class="d-flex justify-content-end mb-4 pb-3" id="chat-log">
+        let element_for_sender = `<li class="d-flex justify-content-end mb-4 pb-3" id="chat-log">
 
                             <div class="chat-body white p-3 ml-2 z-depth-1 mr-30">
                                 <div class="header">
@@ -197,7 +216,21 @@
                             </div>
                         </li>`;
 
-        chat.innerHTML += (element);
+        let element_for_receiver = `<li class="d-flex justify-content-start mb-4">
+                                        <div class="chat-body white p-3 z-depth-1">
+                                            <div class="header">
+                                                <strong class="primary-font">`+ receiver.username +`</strong>
+                                                <small class="pull-right text-muted"><i class="far fa-clock"></i><span
+                                                        class="datetime">`+ time +`</span> mins
+                                                    ago</small>
+                                            </div>
+                                            <hr class="w-100">
+                                            <p class="mb-0">
+                                                `+ my_message +`
+                                            </p>
+                                        </div>
+                                    </li>`
+        chat.innerHTML += (element_for_sender);
         chatBodyContainer.classList.add('chat-smooth');
         chatBodyContainer.scrollTop = chat.scrollHeight;
     };
@@ -205,6 +238,7 @@
 
     chatSocket.onopen = function (e) {
         console.log('onopen');
+        console.log(current_text)
     };
 
     chatSocket.onclose = function (e) {
