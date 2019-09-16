@@ -61,7 +61,7 @@
                         <ul class="list-unstyled chat chat-inner">
                             {% for msg in messages %}
                                 {% if request.user == msg.sender %}
-                                    <li class="d-flex justify-content-end mb-4 pb-3" id="chat-log">
+                                    <li class="d-flex justify-content-end mb-4 pb-3">
                                         <div class="chat-body white p-3 ml-2 z-depth-1 mr-30">
                                             <div class="header">
                                                 <strong class="primary-font">{{ user.username }}</strong>
@@ -200,6 +200,8 @@
 
         console.log(message);
         let time = today.getMinutes() - data['created_minute'];
+
+        
         let element_for_sender = `<li class="d-flex justify-content-end mb-4 pb-3" id="chat-log">
 
                             <div class="chat-body white p-3 ml-2 z-depth-1 mr-30">
@@ -216,20 +218,23 @@
                             </div>
                         </li>`;
 
+
         let element_for_receiver = `<li class="d-flex justify-content-start mb-4">
                                         <div class="chat-body white p-3 z-depth-1">
                                             <div class="header">
-                                                <strong class="primary-font">`+ receiver.username +`</strong>
+                                                <strong class="primary-font">`+ sender +`</strong>
                                                 <small class="pull-right text-muted"><i class="far fa-clock"></i><span
                                                         class="datetime">`+ time +`</span> mins
                                                     ago</small>
                                             </div>
                                             <hr class="w-100">
                                             <p class="mb-0">
-                                                `+ my_message +`
+                                                `+ message +`
                                             </p>
                                         </div>
-                                    </li>`
+                                    </li>`;
+
+
         chat.innerHTML += (element_for_sender);
         chatBodyContainer.classList.add('chat-smooth');
         chatBodyContainer.scrollTop = chat.scrollHeight;
@@ -238,7 +243,6 @@
 
     chatSocket.onopen = function (e) {
         console.log('onopen');
-        console.log(current_text)
     };
 
     chatSocket.onclose = function (e) {

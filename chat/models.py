@@ -1,4 +1,5 @@
 import asyncio
+from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -52,13 +53,14 @@ class Message(models.Model):
 
 
 @receiver(post_save, sender=Message)
-def send_fuck(instance, **kwargs):
+def send(instance, **kwargs):
     from channels.layers import get_channel_layer
     loop = asyncio.get_event_loop()
     layer = get_channel_layer()
+    time = datetime.today().minute - instance.created.minute
     loop.create_task(layer.group_send(str(instance.sender.id), {
         'type': 'chat_message',
-        'message': 'message',
+        'message': instance.text,
         'sender': instance.sender.username,
-        'created_minute': '12321321321'
+        'created_minute': time
     }))
