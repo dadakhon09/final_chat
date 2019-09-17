@@ -39,7 +39,8 @@
                                          class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
                                     <div class="text-small">
                                         <strong>{{ user.username }}</strong>
-                                        <p class="last-message text-muted"><span class="last_message">Hello, Are you there?</span></p>
+                                        <p class="last-message text-muted"><span class="last_message">Hello, Are you there?</span>
+                                        </p>
                                     </div>
                                     <div class="chat-footer">
                                         <p class="text-smaller text-muted mb-0">Just now</p>
@@ -52,9 +53,9 @@
                 </div>
             </div>
             <div class="col-md-6 col-xl-8 pl-md-3 px-lg-auto px-0">
-                
+
                 <p id="receiver" class="text-center">
-                    
+
                 </p>
                 <div class="chat-message">
                     <div class="top chat-body-container">
@@ -167,18 +168,9 @@
     let receiver_id = {{ receiver.id }};
 
 
-
     let my_message = "{{ my_message.text }}";
-    
 
 
-
-
-
-    // let current_text = document.getElementsByClassName('text-form');
-
-    // console.log(current_text)
-    
     document.getElementById('receiver').innerHTML = receiver;
 
 
@@ -196,17 +188,18 @@
         let data = JSON.parse(e.data);
 
         let message = data['message'];
-        let sender = data['sender'];
+        let senderr = data['sender'];
 
-        console.log(message);
         let time = today.getMinutes() - data['created_minute'];
 
-        
-        let element_for_sender = `<li class="d-flex justify-content-end mb-4 pb-3" id="chat-log">
+        let element = ``;
+
+        if (senderr === sender) {
+            element = `<li class="d-flex justify-content-end mb-4 pb-3" id="chat-log">
 
                             <div class="chat-body white p-3 ml-2 z-depth-1 mr-30">
                                 <div class="header">
-                                    <strong class="primary-font">` + sender + `</strong>
+                                    <strong class="primary-font">` + senderr + `</strong>
                                     <small class="pull-right text-muted"><i class="far fa-clock"></i>` + time + ` mins ago ` + `</small>
                                 </div>
                                 <hr class="w-100">
@@ -217,25 +210,22 @@
                                 </p>
                             </div>
                         </li>`;
-
-
-        let element_for_receiver = `<li class="d-flex justify-content-start mb-4">
+        } else {
+            element = `<li class="d-flex justify-content-start mb-4">
                                         <div class="chat-body white p-3 z-depth-1">
                                             <div class="header">
-                                                <strong class="primary-font">`+ sender +`</strong>
-                                                <small class="pull-right text-muted"><i class="far fa-clock"></i><span
-                                                        class="datetime">`+ time +`</span> mins
-                                                    ago</small>
+                                                <strong class="primary-font">` + senderr + `</strong>
+                                                <small class="pull-right text-muted"><i class="far fa-clock"></i>` + time + ` mins ago ` + `</small>
                                             </div>
                                             <hr class="w-100">
                                             <p class="mb-0">
-                                                `+ message +`
+                                                ` + message + `
                                             </p>
                                         </div>
                                     </li>`;
+        }
 
-
-        chat.innerHTML += (element_for_sender);
+        chat.innerHTML += (element);
         chatBodyContainer.classList.add('chat-smooth');
         chatBodyContainer.scrollTop = chat.scrollHeight;
     };
