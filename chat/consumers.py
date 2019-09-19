@@ -31,12 +31,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         receiver = User.objects.get(username=text_data_json['receiver'])
         room_name = text_data_json['room_name']
 
-        if room_name == f'to_{receiver.id}':
-            room = Room.objects.get(room_name=room_name)
-        elif room_name == f'to_{sender.id}':
-            room = Room.objects.get(room_name=f'to_{sender.id}')
-        else:
-            room = ''
+        room_id = int(sender.id) + int(receiver.id)
+
+        room = Room.objects.get(room_name=f'to_{room_id}')
+        # if room_name == f'to_{receiver.id}':
+        #     room = Room.objects.get(room_name=room_name)
+        # elif room_name == f'to_{sender.id}':
+        #     room = Room.objects.get(room_name=f'to_{sender.id}')
+        # else:
+        #     room = ''
 
         m = Message.objects.create(sender=sender, receiver=receiver, text=message, room=room)
 

@@ -26,12 +26,16 @@ class RoomView(LoginRequiredMixin, View):
         users = User.objects.exclude(username=request.user.username) 
         receiver = get_object_or_404(User, id=receiver_id)
         
+        room_id = int(self.request.user.id) + int(receiver.id)
+
+
         if receiver != request.user:
-            if Room.objects.filter(room_name=f'to_{self.request.user.id}').exists() and receiver != request.user:
-                room = Room.objects.get(room_name=f'to_{self.request.user.id}')
+            if Room.objects.filter(room_name=f'to_{room_id}').exists():
+                room = Room.objects.get(room_name=f'to_{room_id}')
 
             else:        
-                room, _ = Room.objects.get_or_create(room_name=f'to_{receiver_id}')
+                room, _ = Room.objects.get_or_create(room_name=f'to_{room_id}')
+
 
         elif receiver == request.user:
             return HttpResponse("You can't chat to yourself")
@@ -39,15 +43,17 @@ class RoomView(LoginRequiredMixin, View):
         else:
             return HttpResponse('wtf')
 
-        messages = Message.objects.filter(room=room)  # .order_by('-created')[:5][::-1]
+
+        messages = Message.objects.filter(room=room)
+
         if messages:
-            my_message = messages.first().text
+            last_message = messages.last().text
         else:
-            my_message = ''
+            last_message = ''
 
         return render(request, 'room.html', {
             'users': users,
-            'my_message': my_message,
+            'last_message': last_message,
             'messages': messages,
             'sender': mark_safe(json.dumps(self.request.user.username)),
             'receiver': receiver,

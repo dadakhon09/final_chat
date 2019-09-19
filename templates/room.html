@@ -25,7 +25,7 @@
         </a>
     </div>
 </div>
-<div style="width: 1500px; margin:auto" class="card grey lighten-3 ">
+<div style="width: 90%; margin:auto" class="card grey lighten-3 ">
     <div class="card-body">
         <div class="row px-lg-2 px-2">
             <div class="col-md-6 col-xl-4 px-0" style="background: #fff; padding: 15px;">
@@ -39,7 +39,12 @@
                                          class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
                                     <div class="text-small">
                                         <strong>{{ user.username }}</strong>
-                                        <p class="last-message text-muted"><span class="last_message">Hello, Are you there?</span>
+                                        <p class="last-message text-muted"><span id="last_message">
+                                        {% if user == receiver %}
+                                            {{ last_message }}
+                                        {% else %}
+                                            
+                                        {% endif %}</span>
                                         </p>
                                     </div>
                                     <div class="chat-footer">
@@ -168,8 +173,7 @@
     let receiver_id = {{ receiver.id }};
 
 
-    let my_message = "{{ my_message.text }}";
-
+    // let my_message = "{{ my_message.text }}";
 
     document.getElementById('receiver').innerHTML = receiver;
 
@@ -190,11 +194,12 @@
         let message = data['message'];
         let senderr = data['sender'];
 
-        let time = today.getMinutes() - data['created_minute'];
 
         let element = ``;
+        // console.log(my_message)
 
         if (senderr === sender) {
+            let time = today.getMinutes() - data['created_minute'];
             element = `<li class="d-flex justify-content-end mb-4 pb-3" id="chat-log">
 
                             <div class="chat-body white p-3 ml-2 z-depth-1 mr-30">
@@ -210,7 +215,9 @@
                                 </p>
                             </div>
                         </li>`;
+                document.getElementById('last_message').innerHTML = message
         } else {
+            let time = data['created_minute'];
             element = `<li class="d-flex justify-content-start mb-4">
                                         <div class="chat-body white p-3 z-depth-1">
                                             <div class="header">
@@ -223,6 +230,8 @@
                                             </p>
                                         </div>
                                     </li>`;
+                document.getElementById('last_message').innerHTML = message
+
         }
 
         chat.innerHTML += (element);
