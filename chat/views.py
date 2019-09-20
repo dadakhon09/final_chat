@@ -26,23 +26,20 @@ class RoomView(LoginRequiredMixin, View):
         users = User.objects.exclude(username=request.user.username) 
         receiver = get_object_or_404(User, id=receiver_id)
         
-        room_id = int(self.request.user.id) + int(receiver.id)
-
+        room_id = pow(2, int(self.request.user.id)) * pow(3, int(receiver.id))
 
         if receiver != request.user:
-            if Room.objects.filter(room_name=f'to_{room_id}').exists():
-                room = Room.objects.get(room_name=f'to_{room_id}')
+            if Room.objects.filter(room_name=f'room_{room_id}').exists():
+                room = Room.objects.get(room_name=f'room_{room_id}')
 
             else:        
-                room, _ = Room.objects.get_or_create(room_name=f'to_{room_id}')
-
+                room, _ = Room.objects.get_or_create(room_name=f'room_{room_id}')
 
         elif receiver == request.user:
             return HttpResponse("You can't chat to yourself")
 
         else:
             return HttpResponse('wtf')
-
 
         messages = Message.objects.filter(room=room)
 

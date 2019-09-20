@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Chat Rooms</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
@@ -11,26 +11,30 @@
 </head>
 
 <body>
-    <div class='container'>
-        <div class='row border-bottom my-3 py-3'>
-            <div class='col'>
-                <h1 class='p-0 m-0'>Chalagram</h1>
-            </div>
-            <h1>{{ request.user.username }}</h1>
-            <a href="{% url 'logout' %}"><button class="btn btn-primary">Logout</button></a>
+<div class='container'>
+    <div class='row border-bottom my-3 py-3'>
+        <div class='col'>
+            <h1 class='p-0 m-0'>Chalagram</h1>
         </div>
+        <h1>{{ request.user.username }}</h1>
+        <a href="{% url 'logout' %}">
+            <button class="btn btn-primary">Logout</button>
+        </a>
     </div>
-    <div style="width: 90%; margin:auto" class="card grey lighten-3 chat-room chat-inner">
-        <div class="card-body ">
-            <div class="row px-lg-2 px-2 " style="min-height: 82vh">
-                <div class="col-md-6 col-xl-4 px-0" style="background: #fff; padding: 15px;">
-{#                    <h6 class="font-weight-bold mb-3 text-center text-lg-left" style="padding: 0 15px"></h6>#}
-                    <div class="white">
-                        <ul class="list-unstyled friend-list">
-                            {% for user in users %}
+</div>
+<div style="width: 90%; margin:auto" class="card grey lighten-3 chat-room chat-inner">
+    <div class="card-body ">
+        <div class="row px-lg-2 px-2 " style="min-height: 82vh">
+            <div class="col-md-6 col-xl-4 px-0" style="background: #fff; padding: 15px;">
+                {#                    <h6 class="font-weight-bold mb-3 text-center text-lg-left" style="padding: 0 15px"></h6>#}
+                <div class="white">
+                    <ul class="list-unstyled friend-list">
+                        {% for user in users %}
                             <li class="active grey lighten-5 p-2" style="border-bottom: 1px solid #dadada">
                                 <a href="{% url 'room' user.id %}" class="d-flex justify-content-between">
-                                    <img width="60px" height="60px" src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" alt="avatar" class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
+                                    <img width="60px" height="60px"
+                                         src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" alt="avatar"
+                                         class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
                                     <div class="text-small">
                                         <strong>{{ user.username }}</strong>
                                         <p class="last-message text-muted">Hello, Are you there?</p>
@@ -41,19 +45,19 @@
                                     </div>
                                 </a>
                             </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
+                        {% endfor %}
+                    </ul>
                 </div>
-                <p> Select user to chat with...</p>
             </div>
+            <p> Select user to chat with...</p>
         </div>
     </div>
-    <style>
+</div>
+<style>
     .chat-inner {
         min-height: 86vh;
     }
-    </style>
+</style>
 </body>
 
 </html>
