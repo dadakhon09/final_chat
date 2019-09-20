@@ -195,7 +195,8 @@
 
         let message = data['message'];
         let senderr = data['sender'];
-
+        // let receiverr = data['receiver_username'];
+        // console.log(receiver)
 
         let element = ``;
         // console.log(my_message)
@@ -219,6 +220,7 @@
                         </li>`;
             document.getElementById('last_message').innerHTML = message
         } else {
+        // } else if (receiverr === receiver && senderr === sender) {
             let time = data['created_minute'];
             element = `<li class="d-flex justify-content-start mb-4">
                                         <div class="chat-body white p-3 z-depth-1">

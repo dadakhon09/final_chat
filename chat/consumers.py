@@ -31,7 +31,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         receiver = User.objects.get(username=text_data_json['receiver'])
         room_name = text_data_json['room_name']
 
-        room_id = int(sender.id) + int(receiver.id)
+
+        room_id = pow(2, int(sender.id)) * pow(3, int(receiver.id))
 
         room = Room.objects.get(room_name=f'room_{room_id}')
 
@@ -43,20 +44,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'type': 'chat_message',
                 'message': m.text,
                 'sender': sender.username,
-                'receiver': receiver.username,
+                # 'receiver_username': receiver.username,
                 'created_minute': int(m.created.minute)
             }
         )
 
     async def chat_message(self, event):
         message = event['message']
+        print(event)
         sender_username = event['sender']
-        receiver_username = event['receiver']
+        # receiver_username = event.get('receiver_username')
         created_minute = event['created_minute']
         await self.send(text_data=json.dumps({
             'message': message,
             'sender': sender_username,
-            'receiver': receiver_username,
+            # 'receiver_username': receiver_username,
             'created_minute': created_minute
         }))
 
