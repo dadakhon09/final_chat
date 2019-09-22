@@ -8,7 +8,6 @@ from chat.models import Room, Message
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-
         self.receiver_id = self.scope['url_route']['kwargs']['receiver_id']
 
         await self.channel_layer.group_add(
@@ -31,10 +30,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         receiver = User.objects.get(username=text_data_json['receiver'])
         room_name = text_data_json['room_name']
 
+        room_id_sender = pow(2, int(sender.id)) * pow(3, int(receiver.id))
+        room_id_receiver = pow(2, int(receiver.id)) * pow(3, int(sender.id))
 
-        room_id = pow(2, int(sender.id)) * pow(3, int(receiver.id))
+        if Room.objects.filter(room_name=f'room_{room_id_sender}').exists():
+            room = Room.objects.get(room_name=f'room_{room_id_sender}')
 
-        room = Room.objects.get(room_name=f'room_{room_id}')
+        else:
+            room = Room.objects.get(room_name=f'room_{room_id_receiver}')
 
         m = Message.objects.create(sender=sender, receiver=receiver, text=message, room=room)
 
@@ -44,21 +47,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'type': 'chat_message',
                 'message': m.text,
                 'sender': sender.username,
-                # 'receiver_username': receiver.username,
+                'receiver_username': receiver.username,
                 'created_minute': int(m.created.minute)
             }
         )
 
     async def chat_message(self, event):
         message = event['message']
-        print(event)
         sender_username = event['sender']
-        # receiver_username = event.get('receiver_username')
+        receiver_username = event.get('receiver_username')
         created_minute = event['created_minute']
         await self.send(text_data=json.dumps({
             'message': message,
             'sender': sender_username,
-            # 'receiver_username': receiver_username,
+            'receiver_username': receiver_username,
             'created_minute': created_minute
         }))
-

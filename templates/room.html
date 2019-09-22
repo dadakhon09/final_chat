@@ -174,7 +174,7 @@
     let receiver = "{{ receiver.username }}";
     let receiver_id = {{ receiver.id }};
 
-
+    console.log(roomName)
     // let my_message = "{{ my_message.text }}";
 
     document.getElementById('receiver').innerHTML = receiver;
@@ -194,12 +194,12 @@
         let data = JSON.parse(e.data);
 
         let message = data['message'];
+        var mes = message.replace('\n', '<br>');
+
         let senderr = data['sender'];
-        // let receiverr = data['receiver_username'];
-        // console.log(receiver)
+        let receiverr = data['receiver_username'];
 
         let element = ``;
-        // console.log(my_message)
 
         if (senderr === sender) {
             let time = today.getMinutes() - data['created_minute'];
@@ -213,14 +213,15 @@
                                 <hr class="w-100">
 
                                 <p class="mb-0" id="">
-                                    ` + message + `
+                                     ` + mes + `
 
                                 </p>
                             </div>
                         </li>`;
-            document.getElementById('last_message').innerHTML = message
+            document.getElementById('last_message').innerHTML = mes
+
+        //} else if (receiverr !== null) {
         } else {
-        // } else if (receiverr === receiver && senderr === sender) {
             let time = data['created_minute'];
             element = `<li class="d-flex justify-content-start mb-4">
                                         <div class="chat-body white p-3 z-depth-1">
@@ -230,7 +231,7 @@
                                             </div>
                                             <hr class="w-100">
                                             <p class="mb-0">
-                                                ` + message + `
+                                                ` + mes + `
                                             </p>
                                         </div>
                                     </li>`;
@@ -252,23 +253,29 @@
         console.error('Chat socket closed unexpectedly');
     };
 
-    document.querySelector('#chat-message-input').focus();
-    document.querySelector('#chat-message-input').onkeyup = function (e) {
-        if (e.keyCode === 13) {
+    var tarea = document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeydown = function (e) {
+        if (e.ctrlKey && e.keyCode === 13) {
+            e.preventDefault();
+            this.value = e.target.value + '\n'
+        } else if (e.keyCode === 13) {
+            e.preventDefault();
             document.querySelector('#chat-message-submit').click();
         }
-    };
 
+    };
     document.querySelector('#chat-message-submit').onclick = function (e) {
         let messageInputDom = document.querySelector('#chat-message-input');
         let message = messageInputDom.value;
 
-        chatSocket.send(JSON.stringify({
-            'message': message,
-            'sender': sender,
-            'receiver': receiver,
-            'room_name': roomName,
-        }));
+        if (message !== '') {
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'sender': sender,
+                'receiver': receiver,
+                'room_name': roomName,
+            }));
+        }
 
 
         messageInputDom.value = '';
