@@ -174,8 +174,6 @@
     let receiver = "{{ receiver.username }}";
     let receiver_id = {{ receiver.id }};
 
-    console.log(roomName)
-    // let my_message = "{{ my_message.text }}";
 
     document.getElementById('receiver').innerHTML = receiver;
 
@@ -220,8 +218,8 @@
                         </li>`;
             document.getElementById('last_message').innerHTML = mes
 
-        //} else if (receiverr !== null) {
-        } else {
+        } else if (senderr === receiver) {
+        //} else {
             let time = data['created_minute'];
             element = `<li class="d-flex justify-content-start mb-4">
                                         <div class="chat-body white p-3 z-depth-1">
@@ -258,7 +256,12 @@
         if (e.ctrlKey && e.keyCode === 13) {
             e.preventDefault();
             this.value = e.target.value + '\n'
-        } else if (e.keyCode === 13) {
+        }
+        else if (e.shiftKey && e.keyCode === 13) {
+            e.preventDefault();
+            this.value = e.target.value + '\n'
+        }
+        else if (e.keyCode === 13) {
             e.preventDefault();
             document.querySelector('#chat-message-submit').click();
         }
@@ -268,7 +271,7 @@
         let messageInputDom = document.querySelector('#chat-message-input');
         let message = messageInputDom.value;
 
-        if (message !== '') {
+        if (message !== ''){
             chatSocket.send(JSON.stringify({
                 'message': message,
                 'sender': sender,
